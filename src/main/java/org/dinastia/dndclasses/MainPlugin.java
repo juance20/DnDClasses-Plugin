@@ -36,8 +36,10 @@ public final class MainPlugin extends JavaPlugin implements CommandExecutor {
         Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "[" + ChatColor.BLUE + "DnDClasses" + ChatColor.GOLD + "] " + ChatColor.GREEN + "Enabled");
         getCommand("setclass").setExecutor(new SetClassCommand());
         getCommand("checkclass").setExecutor(new CheckClassCommand());
+        getCommand("getbirra").setExecutor(new GetBirraCommand());
         Bukkit.getPluginManager().registerEvents(new onEntityTargetLivingEntityEvent(), this);
-
+        Bukkit.getPluginManager().registerEvents(new onEntityDamageEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new onPlayerConsumeEvent(), this);
 
         new BukkitRunnable(){
 
@@ -66,22 +68,29 @@ public final class MainPlugin extends JavaPlugin implements CommandExecutor {
             if(clase == null) return;
             switch(clase){
                 case "barbaro":
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 140, 0));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 140, 0));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 140, 0, false,false,false));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 140, 0, false,false,false));
+                    player.setMaxHealth(20);
+                    if(config.getBoolean(player.getName()+"_adicto") == true){
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 140, 1, false,false,false));
+                    }
                     break;
                 case "bardo":
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 140, 0));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 140, 0, false,false,false));
+                    player.setMaxHealth(20);
                     break;
                 case "clerigo":
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 140, 0));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 140, 0));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 140, 0, false,false,false));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 140, 0, false,false,false));
+                    player.setMaxHealth(20);
                     break;
                 case "picaro":
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 140, 0));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 140, 0, false,false,false));
                     player.setMaxHealth(10);
                     break;
                 case "mago":
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 600, 0));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 600, 0, false,false,false));
+                    player.setMaxHealth(20);
                     break;
             }
         }

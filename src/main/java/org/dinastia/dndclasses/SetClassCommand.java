@@ -22,6 +22,7 @@ public class SetClassCommand implements CommandExecutor {
         switch(args[0]){
             case "barbaro":
                 clase = "barbaro";
+                config.set(sender.getName()+"_adicto", true);
                 break;
             case "bardo":
                 clase = "bardo";
