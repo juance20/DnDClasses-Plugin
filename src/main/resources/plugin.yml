@@ -2,4 +2,7 @@ name: DnDClasses
 version: '${project.version}'
 main: org.dinastia.dndclasses.MainPlugin
 api-version: '1.16'
-author: "Juance20"
+author: [Juance20]
+commands:
+  setclass: ~
+  checkclass: ~
