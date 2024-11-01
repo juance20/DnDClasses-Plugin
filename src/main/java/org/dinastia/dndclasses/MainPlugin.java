@@ -40,6 +40,7 @@ public final class MainPlugin extends JavaPlugin implements CommandExecutor {
         Bukkit.getPluginManager().registerEvents(new onEntityTargetLivingEntityEvent(), this);
         Bukkit.getPluginManager().registerEvents(new onEntityDamageEvent(), this);
         Bukkit.getPluginManager().registerEvents(new onPlayerConsumeEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new AtaqueTemerarioEvent(), this);
 
         new BukkitRunnable(){
 
@@ -66,6 +67,7 @@ public final class MainPlugin extends JavaPlugin implements CommandExecutor {
         for(Player player : Bukkit.getOnlinePlayers()) {
             String clase = (String) config.get(player.getName()+"_class");
             if(clase == null) return;
+            if(config.getBoolean(player.getName() + "_desactivar_pasivas")) return;
             switch(clase){
                 case "barbaro":
                     player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 140, 0, false,false,false));
