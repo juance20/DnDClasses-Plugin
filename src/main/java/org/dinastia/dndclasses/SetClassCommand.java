@@ -17,31 +17,32 @@ public class SetClassCommand implements CommandExecutor {
 
         YamlConfiguration config = MainPlugin.getConfigYaml();
 
+        String clase = "";
+
         switch(args[0]){
             case "barbaro":
-                config.set(sender.getName() + "_class", "barbaro");
-                sender.sendMessage(ChatColor.GOLD + "Clase establecida: " + ChatColor.GREEN + "barbaro");
+                clase = "barbaro";
                 break;
             case "bardo":
-                config.set(sender.getName() + "_class", "bardo");
-                sender.sendMessage(ChatColor.GOLD + "Clase establecida: " + ChatColor.GREEN + "bardo");
+                clase = "bardo";
                 break;
             case "clerigo":
-                config.set(sender.getName() + "_class", "clerigo");
-                sender.sendMessage(ChatColor.GOLD + "Clase establecida: " + ChatColor.GREEN + "clerigo");
+                clase = "clerigo";
                 break;
             case "picaro":
-                config.set(sender.getName() + "_class", "picaro");
-                sender.sendMessage(ChatColor.GOLD + "Clase establecida: " + ChatColor.GREEN + "picaro");
+                clase = "picaro";
                 break;
             case "mago":
-                config.set(sender.getName() + "_class", "mago");
-                sender.sendMessage(ChatColor.GOLD + "Clase establecida: " + ChatColor.GREEN + "mago");
+                clase = "mago";
                 break;
             default:
                 sender.sendMessage(ChatColor.RED + "Argumento incorrecto!");
                 return false;
         }
+
+        config.set(sender.getName() + "_class", clase);
+        sender.sendMessage(ChatColor.GOLD + "Clase establecida: " + ChatColor.GREEN + clase);
+
         return false;
     }
 }

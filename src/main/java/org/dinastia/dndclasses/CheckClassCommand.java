@@ -21,4 +21,9 @@ public class CheckClassCommand implements CommandExecutor {
         sender.sendMessage(ChatColor.GOLD + "Clase de "+sender.getName()+": " + ChatColor.GREEN + clase);
         return false;
     }
+
+    public String getClase(String name){
+        YamlConfiguration config = MainPlugin.getConfigYaml();
+        return (String) config.get(name+"_class");
+    }
 }

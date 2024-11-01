@@ -2,15 +2,17 @@ package org.dinastia.dndclasses;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 
 public final class MainPlugin extends JavaPlugin implements CommandExecutor {
 
@@ -34,6 +36,17 @@ public final class MainPlugin extends JavaPlugin implements CommandExecutor {
         Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "[" + ChatColor.BLUE + "DnDClasses" + ChatColor.GOLD + "] " + ChatColor.GREEN + "Enabled");
         getCommand("setclass").setExecutor(new SetClassCommand());
         getCommand("checkclass").setExecutor(new CheckClassCommand());
+        Bukkit.getPluginManager().registerEvents(new onEntityTargetLivingEntityEvent(), this);
+
+
+        new BukkitRunnable(){
+
+            @Override
+            public void run() {
+                checkPasives();
+            }
+        }.runTaskTimer(MainPlugin.getInstance(), 10, 100);
+
     }
 
     @Override
@@ -45,4 +58,33 @@ public final class MainPlugin extends JavaPlugin implements CommandExecutor {
         }
         Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "[" + ChatColor.BLUE + "DnDClasses" + ChatColor.GOLD + "] " + ChatColor.RED + "Disabled");
     }
+
+    public void checkPasives(){
+        YamlConfiguration config = MainPlugin.getConfigYaml();
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            String clase = (String) config.get(player.getName()+"_class");
+            if(clase == null) return;
+            switch(clase){
+                case "barbaro":
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 140, 0));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 140, 0));
+                    break;
+                case "bardo":
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 140, 0));
+                    break;
+                case "clerigo":
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 140, 0));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 140, 0));
+                    break;
+                case "picaro":
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 140, 0));
+                    player.setMaxHealth(10);
+                    break;
+                case "mago":
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 600, 0));
+                    break;
+            }
+        }
+    }
+
 }
